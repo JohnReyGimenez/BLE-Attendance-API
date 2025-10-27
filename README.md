@@ -7,7 +7,7 @@ This is the Ruby on Rails backend API for the BLE Attendance System. It is desig
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 This API provides RESTful endpoints for managing students, tags, and attendance records.
 
@@ -42,7 +42,7 @@ This is the primary endpoint for the ESP32 scanner to send data.
 
 ---
 
-## 🤖 ESP32 JSON Payload
+## ESP32 JSON Payload
 
 To log an attendance event, the ESP32 (Scanner Node B) must send an HTTP POST request to `/api/v1/attendances` with a JSON body in the following format:
 
