@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_142051) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_12_152710) do
   create_table "attendance_records", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "mac_address"
@@ -21,12 +21,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_142051) do
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
   end
 
+  create_table "classrooms", force: :cascade do |t|
+    t.string "name"
+    t.boolean "archived"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "students", force: :cascade do |t|
     t.string "name"
     t.string "student_id_number"
     t.string "block"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "classroom_id", null: false
+    t.index ["classroom_id"], name: "index_students_on_classroom_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -38,5 +47,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_142051) do
   end
 
   add_foreign_key "attendance_records", "students"
+  add_foreign_key "students", "classrooms"
   add_foreign_key "tags", "students"
 end
