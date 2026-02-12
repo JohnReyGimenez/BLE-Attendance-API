@@ -11,11 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_10_17_142051) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
   create_table "attendance_records", force: :cascade do |t|
-    t.bigint "student_id", null: false
+    t.integer "student_id", null: false
     t.string "mac_address"
     t.string "event_type"
     t.datetime "timestamp"
@@ -34,7 +31,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_142051) do
 
   create_table "tags", force: :cascade do |t|
     t.string "mac_address"
-    t.bigint "student_id"
+    t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id"], name: "index_tags_on_student_id"
