@@ -1,4 +1,6 @@
 class Student < ApplicationRecord
+  belongs_to :classroom, optional: true
+
   has_one :tag, dependent: :nullify
   has_many :attendance_records, dependent: :destroy
 
