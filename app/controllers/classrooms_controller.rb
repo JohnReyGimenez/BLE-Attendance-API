@@ -1,19 +1,44 @@
-class GroupsController < ApplicationController
+class ClassroomsController < ApplicationController
   def index
-    # Find all unique Block names to display as "Groups"
-    # Example result: ["Block A", "Block B", "Science 101"]
-    @blocks = Student.select(:block).distinct.pluck(:block).compact.sort
+    @classrooms = Classroom.where(archived: false)
+    @total_students = Student.count
+    @present_today = AttendanceRecord.where(timestamp: Date.today.all_day).select(:student_id).distinct.count
   end
 
   def show
-    @block_name = params[:id]
+    @classroom = Classroom.find(params[:id])
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
-    @date = params[:date] ? Date.parse(params[:date]) : Date.current
+    @students = @classroom.students.includes(:attendance_records)
 
-    @students = Student.where(block: @block_name).order(:name)
     @attendance_data = AttendanceRecord.where(
       student_id: @students.pluck(:id),
       timestamp: @date.all_day
     ).group_by(&:student_id)
+  end
+
+  def new
+    @classroom = Classroom.new
+  end
+
+  def create
+    @classroom = Classroom.new(classroom_params)
+    if @classroom.save
+      redirect_to root_path, notice: "Classroom created successfully!"
+    else
+      render :new
+    end
+  end
+
+  def archive
+    @classroom = Classroom.find(params[:id])
+    @classroom.update(archived: true)
+    redirect_to root_path, notice: "Classroom archived."
+  end
+
+  private
+
+  def classroom_params
+    params.require(:classroom).permit(:name)
   end
 end

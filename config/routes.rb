@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  root "groups#index"
+  root "classrooms#index"
 
-  resources :groups, only: [ :index, :show ]
+  resources :classrooms, only: [ :index, :show, :new, :create ] do
+    member do
+      patch :archive
+    end
+  end
 
   namespace :api do
     namespace :v1 do
