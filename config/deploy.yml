@@ -29,7 +29,7 @@ registry:
 
   # Always use an access token rather than real password when possible.
   password:
-    - dckr_pat_efsxggE8QCyxCr76qwvnlef5ZAA
+    - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
