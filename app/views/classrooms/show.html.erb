@@ -12,9 +12,14 @@
   <div class="flex items-center gap-4">
     <form action="<%= classroom_path(@classroom) %>" method="get" class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
       <input type="date" name="date" value="<%= @date %>" 
-             class="border-none text-sm text-gray-600 focus:ring-0 rounded-md bg-transparent outline-none" 
+             class="border-none text-sm text-gray-600 focus:ring-0 rounded-md bg-transparent outline-none cursor-pointer" 
              onchange="this.form.submit()">
     </form>
+
+    <%= button_to archive_classroom_path(@classroom), method: :patch, form_class: "inline-block", class: "cursor-pointer flex items-center gap-2 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 text-sm font-medium py-2.5 px-5 rounded-lg border border-gray-200 shadow-sm transition-all duration-200" do %>
+      <i class="ri-archive-line text-lg"></i>
+      <span><%= @classroom.archived ? 'Unarchive' : 'Archive' %></span>
+    <% end %>
 
     <button onclick="document.getElementById('assign-modal').classList.remove('hidden')" 
             class="cursor-pointer flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-sm font-medium py-2.5 px-6 rounded-lg border border-blue-200 shadow-sm transition-all duration-200">
@@ -81,28 +86,27 @@
   <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity backdrop-blur-sm"></div>
 
   <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-    <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg z-10">
+    <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md z-10">
       
-      <div class="bg-white px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="text-lg font-semibold leading-6 text-gray-900">Assign Student to <%= @classroom.name %></h3>
-        <button onclick="document.getElementById('assign-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-500 transition-colors cursor-pointer">
-          <i class="ri-close-line text-2xl"></i>
+      <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h3 class="font-bold text-gray-800">Assign Student to <%= @classroom.name %></h3>
+        <button onclick="document.getElementById('assign-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+          <i class="ri-close-line text-xl"></i>
         </button>
       </div>
       
-      <form action="<%= assign_student_classroom_path(@classroom) rescue '#' %>" method="post" class="p-8">
+      <form action="<%= assign_student_classroom_path(@classroom) rescue '#' %>" method="post" class="p-6">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Student ID or Email</label>
-          <input type="text" name="identifier" placeholder="e.g., 19020153 or student@school.edu.ph" class="w-full border border-gray-300 rounded-lg px-5 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Student ID or Email</label>
+          <input type="text" name="identifier" placeholder="e.g., 19020153 or student@school.edu.ph" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
           <p class="text-xs text-gray-500 mt-2">Enter the student's registered ID number or email to link them to this class.</p>
         </div>
 
-        <div class="flex justify-end gap-4 pt-4 border-t border-gray-50">
-          <button type="button" onclick="document.getElementById('assign-modal').classList.add('hidden')" class="px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Cancel</button>
-          
-          <button type="submit" class="cursor-pointer bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-sm font-medium py-2.5 px-6 rounded-lg border border-blue-200 shadow-sm transition-all duration-200">Assign Student</button>
+        <div class="flex justify-end gap-3 mt-6">
+          <button type="button" onclick="document.getElementById('assign-modal').classList.add('hidden')" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Cancel</button>
+          <button type="submit" class="cursor-pointer bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-sm font-medium py-2 px-4 rounded-lg border border-blue-200 shadow-sm transition-all duration-200">Assign Student</button>
         </div>
       </form>
     </div>

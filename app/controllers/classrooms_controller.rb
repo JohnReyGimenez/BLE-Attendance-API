@@ -43,6 +43,13 @@ class ClassroomsController < ApplicationController
     redirect_to root_path, notice: "Classroom archived."
   end
 
+  def archive
+    @classroom = Classroom.find(params[:id])
+    @classroom.update(archived: !@classroom.archived)
+
+    redirect_to root_path, notice: "#{@classroom.name} archive status updated!"
+  end
+
   private
 
   def classroom_params
