@@ -1,6 +1,7 @@
 module Api
   module V1
     class AttendancesController < ApplicationController
+      skip_before_action :verify_authenticity_token
       # POST /api/v1/attendances
       def create
         # Find tag by its MAC address

@@ -1,4 +1,6 @@
 class ClassroomsController < ApplicationController
+  helper_method :get_event_time
+
   def index
     if params[:filter] == "archived"
       @classrooms = Classroom.where(archived: true)
@@ -9,7 +11,7 @@ class ClassroomsController < ApplicationController
     end
 
     @total_students = Student.count
-    @present_today = AttendanceRecord.where(timestamp: Date.today.all_day).select(:student_id).distinct.count
+    @present_today = AttendanceRecord.all.select { |r| (r.timestamp.to_date == Date.today rescue false) }.map(&:student_id).uniq.count
   end
 
   def show
@@ -17,11 +19,9 @@ class ClassroomsController < ApplicationController
     @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
     @students = @classroom.students.includes(:attendance_records)
-
-    @attendance_data = AttendanceRecord.where(
-      student_id: @students.pluck(:id),
-      timestamp: @date.all_day
-    ).group_by(&:student_id)
+    @attendance_data = AttendanceRecord.where(student_id: @students.pluck(:id)).select do |record|
+      record.timestamp.to_date == @date rescue false
+    end.group_by(&:student_id)
   end
 
   def new
@@ -39,21 +39,8 @@ class ClassroomsController < ApplicationController
 
   def archive
     @classroom = Classroom.find(params[:id])
-    @classroom.update(archived: true)
-    redirect_to root_path, notice: "Classroom archived."
-  end
-
-  def archive
-    @classroom = Classroom.find(params[:id])
     @classroom.update(archived: !@classroom.archived)
-
     redirect_to root_path, notice: "#{@classroom.name} archive status updated!"
-  end
-
-  private
-
-  def classroom_params
-    params.require(:classroom).permit(:name)
   end
 
   def assign_student
@@ -68,5 +55,22 @@ class ClassroomsController < ApplicationController
     else
       redirect_to classroom_path(@classroom), alert: "Could not find a student with that ID or Email."
     end
+  end
+
+  private
+
+  def classroom_params
+    params.require(:classroom).permit(:name)
+  end
+
+  def get_event_time(records, event_type)
+    return "N/A" unless records
+    record = records.find { |r| r.event_type == event_type }
+    return "N/A" unless record && record.timestamp
+
+    time = record.timestamp.is_a?(String) ? Time.parse(record.timestamp) : record.timestamp
+    time.strftime("%I:%M %p")
+  rescue
+    "N/A"
   end
 end
