@@ -1,6 +1,13 @@
 class ClassroomsController < ApplicationController
   def index
-    @classrooms = Classroom.where(archived: false)
+    if params[:filter] == "archived"
+      @classrooms = Classroom.where(archived: true)
+      @current_filter = "archived"
+    else
+      @classrooms = Classroom.where(archived: false)
+      @current_filter = "active"
+    end
+
     @total_students = Student.count
     @present_today = AttendanceRecord.where(timestamp: Date.today.all_day).select(:student_id).distinct.count
   end

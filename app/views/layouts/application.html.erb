@@ -86,28 +86,26 @@
       </div>
 
     </div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
+  <script>
+      function initializeSidebar() {
         const toggleBtn = document.getElementById('sidebar-toggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         
         if(toggleBtn) {
-          toggleBtn.addEventListener('click', (e) => {
+          const newToggleBtn = toggleBtn.cloneNode(true);
+          toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+          
+          newToggleBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (sidebar.classList.contains('-translate-x-full')) {
-              sidebar.classList.remove('-translate-x-full');
-              mainContent.classList.remove('ml-0');
-              mainContent.classList.add('ml-64');
-            } else {
-              sidebar.classList.add('-translate-x-full');
-              mainContent.classList.remove('ml-64');
-              mainContent.classList.add('ml-0');
-            }
+            sidebar.classList.toggle('-translate-x-full');
+            mainContent.classList.toggle('ml-0');
+            mainContent.classList.toggle('ml-64');
           });
         }
-      });
+      }
+
+      document.addEventListener("turbo:load", initializeSidebar);
     </script>
   </body>
 </html>
