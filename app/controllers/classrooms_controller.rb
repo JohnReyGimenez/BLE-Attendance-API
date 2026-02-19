@@ -41,4 +41,18 @@ class ClassroomsController < ApplicationController
   def classroom_params
     params.require(:classroom).permit(:name)
   end
+
+  def assign_student
+    @classroom = Classroom.find(params[:id])
+
+    student = Student.find_by(email: params[:identifier]) ||
+              Student.find_by(student_id_number: params[:identifier])
+
+    if student
+      student.update(classroom: @classroom)
+      redirect_to classroom_path(@classroom), notice: "#{student.name} was successfully assigned!"
+    else
+      redirect_to classroom_path(@classroom), alert: "Could not find a student with that ID or Email."
+    end
+  end
 end

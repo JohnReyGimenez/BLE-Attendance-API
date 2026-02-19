@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :classrooms, only: [ :index, :show, :new, :create ] do
     member do
       patch :archive
+      post :assign_student
     end
   end
 
