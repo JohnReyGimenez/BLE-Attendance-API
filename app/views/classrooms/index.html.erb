@@ -5,7 +5,7 @@
   </div>
   
   <div class="bg-white border border-gray-200 rounded-lg p-1 flex">
-    <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-medium">All Groups</span>
+    <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-sm font-medium">All Classrooms</span>
     <span class="px-3 py-1 text-gray-500 rounded-md text-sm hover:bg-gray-50 cursor-pointer">Archived</span>
   </div>
 </div>
@@ -33,18 +33,18 @@
 
   <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 text-xl">
-      <i class="ri-group-line"></i>
+      <i class="ri-building-line"></i>
     </div>
     <div>
-      <div class="text-2xl font-bold text-gray-800"><%= @blocks.count %></div>
-      <div class="text-sm text-gray-500">Active Groups</div>
+      <div class="text-2xl font-bold text-gray-800"><%= @classrooms.count %></div>
+      <div class="text-sm text-gray-500">Active Classrooms</div>
     </div>
   </div>
 </div>
 
-<h2 class="text-lg font-bold text-gray-800 mb-4">Your Groups</h2>
+<h2 class="text-lg font-bold text-gray-800 mb-4">Your Classrooms</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <% @blocks.each do |block| %>
+  <% @classrooms.each do |classroom| %>
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden group">
       <div class="p-6">
         <div class="flex justify-between items-start mb-4">
@@ -54,18 +54,14 @@
           <span class="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded">Active</span>
         </div>
         
-        <h3 class="text-xl font-bold text-gray-800 mb-1"><%= block %></h3>
-        <p class="text-sm text-gray-500 mb-4"><%= Student.where(block: block).count %> Students enrolled</p>
+        <h3 class="text-xl font-bold text-gray-800 mb-1"><%= classroom.name %></h3>
+        <p class="text-sm text-gray-500 mb-4"><%= classroom.students.count %> Students enrolled</p>
         
-        <div class="w-full bg-gray-100 rounded-full h-1.5 mb-2">
-          <div class="bg-blue-600 h-1.5 rounded-full" style="width: 75%"></div>
         </div>
-        <div class="text-xs text-gray-400">Daily attendance avg: 75%</div>
-      </div>
       
       <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 flex justify-between items-center group-hover:bg-blue-50 transition-colors">
         <span class="text-sm font-medium text-gray-600 group-hover:text-blue-700">View Details</span>
-        <%= link_to group_path(block), class: "w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 group-hover:text-blue-600 shadow-sm" do %>
+        <%= link_to classroom_path(classroom), class: "w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 group-hover:text-blue-600 shadow-sm" do %>
           <i class="ri-arrow-right-line"></i>
         <% end %>
       </div>
