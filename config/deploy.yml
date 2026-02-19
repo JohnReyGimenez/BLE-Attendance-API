@@ -1,13 +1,13 @@
 # Name of your application. Used to uniquely configure containers.
-service: my_api_app
+service: attendance-hub
 
 # Name of the container image.
-image: your-user/my_api_app
+image: alricthe/attendance-hub
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 66.181.46.14
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -25,16 +25,16 @@ proxy:
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: your-user
+  username: alricthe
 
   # Always use an access token rather than real password when possible.
   password:
-    - KAMAL_REGISTRY_PASSWORD
+    - dckr_pat_efsxggE8QCyxCr76qwvnlef5ZAA
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   secret:
-    - RAILS_MASTER_KEY
+    - ffc45472849c9af7338ba97caa497b03
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
