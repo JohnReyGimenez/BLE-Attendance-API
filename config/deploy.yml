@@ -38,7 +38,7 @@ aliases:
 volumes:
   - "attendance_hub_storage:/rails/storage"
 
-# asset_path: /rails/public/assets
+asset_path: /rails/public/assets
 
 # Configure the image builder.
 builder:
