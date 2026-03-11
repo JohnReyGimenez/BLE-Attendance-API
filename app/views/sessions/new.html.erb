@@ -1,31 +1,33 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<div class="w-full max-w-md mx-auto mt-16 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+  
+  <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-center bg-gray-50">
+    <h3 class="text-xl font-bold text-gray-800">Login to AttendanceHub</h3>
+  </div>
 
-  <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <h1 class="font-bold text-4xl">Sign in</h1>
-
-  <%= form_with url: session_url, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+  <%= form_with url: session_path, class: "p-8" do |form| %>
+    
+    <div class="mb-6">
+      <%= form.label :email_address, "Email Address", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, placeholder: "john@example.com", class: "w-full rounded-lg border border-gray-300 px-5 py-3.5 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" %>
     </div>
 
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
-
-    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-      <div class="inline">
-        <%= form.submit "Sign in", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-      </div>
-
-      <div class="mt-4 text-sm text-gray-500 sm:mt-0">
-        <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline hover:no-underline" %>
+    <div class="mb-6">
+      <%= form.label :password, class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.password_field :password, required: true, placeholder: "••••••••", class: "w-full rounded-lg border border-gray-300 px-5 py-3.5 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" %>
+      
+      <div class="mt-3 text-left">
+        <%= link_to "Forgot password?", new_password_path, class: "text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors" %>
       </div>
     </div>
+
+    <div class="flex flex-col gap-4 pt-6 border-t border-gray-100">
+      <%= form.submit "Log In", class: "w-full cursor-pointer bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-base font-bold py-3.5 px-6 rounded-lg border border-blue-200 shadow-sm transition-all duration-200" %>
+      
+      <p class="text-center text-sm text-gray-600 mt-2">
+        Not a member? 
+        <%= link_to "Sign up now", signup_path, class: "font-semibold text-blue-600 hover:text-blue-800 transition-colors" %>
+      </p>
+    </div>
+    
   <% end %>
 </div>

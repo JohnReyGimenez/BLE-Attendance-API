@@ -20,79 +20,84 @@
 
   <body class="text-gray-800 bg-gray-50 font-sans antialiased">
     
-    <div id="sidebar" class="fixed left-0 top-0 w-64 h-full bg-white border-r border-gray-200 z-50 sidebar-transition transform translate-x-0">
-      
-      <div class="h-16 flex items-center px-6 border-b border-gray-50">
-        <a href="/" class="flex items-center text-blue-600 gap-2 no-underline hover:text-blue-700">
-          <i class="ri-user-smile-fill text-2xl"></i>
-          <span class="text-lg font-bold tracking-wide">AttendanceHub</span>
-        </a>
-      </div>
+    <% if authenticated? %>
+      <div id="sidebar" class="fixed left-0 top-0 w-64 h-full bg-white border-r border-gray-200 z-50 sidebar-transition transform translate-x-0">
+        
+        <div class="h-16 flex items-center px-6 border-b border-gray-50">
+          <a href="/" class="flex items-center text-blue-600 gap-2 no-underline hover:text-blue-700">
+            <i class="ri-user-smile-fill text-2xl"></i>
+            <span class="text-lg font-bold tracking-wide">AttendanceHub</span>
+          </a>
+        </div>
 
-      <div class="p-4 h-[calc(100%-4rem)] overflow-y-auto no-scrollbar">
-        <ul class="space-y-1">
-          <li>
-            <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-blue-600 group transition-colors bg-blue-50 text-blue-600">
-              <i class="ri-dashboard-2-line text-lg"></i>
-              <span class="font-medium">Dashboard</span>
-            </a>
-          </li>
+        <div class="p-4 h-[calc(100%-4rem)] overflow-y-auto no-scrollbar">
+          <ul class="space-y-1">
+            <li>
+              <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-blue-600 group transition-colors bg-blue-50 text-blue-600">
+                <i class="ri-dashboard-2-line text-lg"></i>
+                <span class="font-medium">Dashboard</span>
+              </a>
+            </li>
 
-          <li class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-4">Classrooms</li>
+            <li class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-4">Classrooms</li>
 
-          <% active_classrooms = Classroom.where(archived: false) %>
-          <% if active_classrooms.present? %>
-            <% active_classrooms.each do |classroom| %>
+            <% active_classrooms = Classroom.where(archived: false) %>
+            <% if active_classrooms.present? %>
+              <% active_classrooms.each do |classroom| %>
+                 <li>
+                  <a href="/classrooms/<%= classroom.id %>" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                    <i class="ri-group-line text-lg"></i>
+                    <span class="font-medium"><%= classroom.name %></span>
+                  </a>
+                </li>
+              <% end %>
+            <% else %>
                <li>
-                <a href="/classrooms/<%= classroom.id %>" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">
-                  <i class="ri-group-line text-lg"></i>
-                  <span class="font-medium"><%= classroom.name %></span>
-                </a>
-              </li>
+                  <span class="px-3 text-sm text-gray-400">No Classrooms Found</span>
+               </li>
             <% end %>
-          <% else %>
-             <li>
-                <span class="px-3 text-sm text-gray-400">No Classrooms Found</span>
-             </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-    
-    <div id="main-content" class="ml-64 min-h-screen flex flex-col main-transition">
-      
-      <div class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-40">
-        <button id="sidebar-toggle" class="text-xl text-gray-600 hover:bg-gray-100 p-2 rounded-full">
-          <i class="ri-menu-2-line"></i>
-        </button>
-
-        <div class="flex items-center gap-4">
-          <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full">
-            <i class="ri-notification-3-line text-xl"></i>
-          </button>
-          
-          <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
-            <div class="text-right hidden sm:block">
-              <div class="text-sm font-bold text-gray-700">Professor</div>
-              <div class="text-xs text-gray-400">Admin</div>
-            </div>
-            <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border border-gray-200" alt="Profile">
-          </div>
+          </ul>
         </div>
       </div>
+    <% end %>
+    
+    <div id="main-content" class="<%= authenticated? ? 'ml-64' : 'ml-0' %> min-h-screen flex flex-col main-transition">
+      
+      <% if authenticated? %>
+        <div class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-40">
+          <button id="sidebar-toggle" class="text-xl text-gray-600 hover:bg-gray-100 p-2 rounded-full">
+            <i class="ri-menu-2-line"></i>
+          </button>
 
-      <div class="p-6">
+          <div class="flex items-center gap-4">
+            <button class="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+              <i class="ri-notification-3-line text-xl"></i>
+            </button>
+            
+            <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
+              <div class="text-right hidden sm:block">
+                <div class="text-sm font-bold text-gray-700">Professor</div>
+                <div class="text-xs text-gray-400">Admin</div>
+              </div>
+              <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" class="w-9 h-9 rounded-full border border-gray-200" alt="Profile">
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="<%= authenticated? ? 'p-6' : 'p-0 flex items-center justify-center min-h-screen' %>">
         <%= yield %>
       </div>
 
     </div>
-  <script>
+
+    <script>
       function initializeSidebar() {
         const toggleBtn = document.getElementById('sidebar-toggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         
-        if(toggleBtn) {
+        if(toggleBtn && sidebar && mainContent) {
           const newToggleBtn = toggleBtn.cloneNode(true);
           toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
           
