@@ -46,14 +46,16 @@ class ClassroomsController < ApplicationController
   def assign_student
     @classroom = Classroom.find(params[:id])
 
-    student = Student.find_by(email: params[:identifier]) ||
-              Student.find_by(student_id_number: params[:identifier])
+    student = Student.find_or_initialize_by(student_id_number: params[:student_id_number])
 
-    if student
-      student.update(classroom: @classroom)
+    if student.update(
+         name: params[:name],
+         mac_address: params[:mac_address],
+         classroom: @classroom
+       )
       redirect_to classroom_path(@classroom), notice: "#{student.name} was successfully assigned!"
     else
-      redirect_to classroom_path(@classroom), alert: "Could not find a student with that ID or Email."
+      redirect_to classroom_path(@classroom), alert: "Failed to assign student. Please check the fields."
     end
   end
 

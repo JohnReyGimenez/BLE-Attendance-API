@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between mb-8">
   <div class="flex items-center gap-4">
-    <%= link_to classrooms_path, class: "w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-200 transition-colors shadow-sm" do %>
+    <%= link_to root_path, class: "w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-200 transition-colors shadow-sm" do %>
       <i class="ri-arrow-left-line"></i>
     <% end %>
     <div>
@@ -89,24 +89,34 @@
     <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md z-10">
       
       <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-        <h3 class="font-bold text-gray-800">Assign Student to <%= @classroom.name %></h3>
-        <button onclick="document.getElementById('assign-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+        <h3 class="font-bold text-gray-800">Add Student to <%= @classroom.name %></h3>
+        <button type="button" onclick="document.getElementById('assign-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
           <i class="ri-close-line text-xl"></i>
         </button>
       </div>
       
-      <form action="<%= assign_student_classroom_path(@classroom) rescue '#' %>" method="post" class="p-6">
+      <form action="<%= assign_student_classroom_path(@classroom) %>" method="post" class="p-6">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Student ID or Email</label>
-          <input type="text" name="identifier" placeholder="e.g., 19020153 or student@school.edu.ph" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
-          <p class="text-xs text-gray-500 mt-2">Enter the student's registered ID number or email to link them to this class.</p>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input type="text" name="name" required placeholder="Juan Dela Cruz" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Student ID Number</label>
+          <input type="text" name="student_id_number" required placeholder="e.g., 19020153" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">BLE Tag MAC Address</label>
+          <input type="text" name="mac_address" required placeholder="AA:BB:CC:DD:EE:FF" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-mono uppercase">
+          <p class="text-xs text-gray-500 mt-2">Scan the physical tag with the nRF Connect app to get this MAC address.</p>
         </div>
 
         <div class="flex justify-end gap-3 mt-6">
           <button type="button" onclick="document.getElementById('assign-modal').classList.add('hidden')" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Cancel</button>
-          <button type="submit" class="cursor-pointer bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-sm font-medium py-2 px-4 rounded-lg border border-blue-200 shadow-sm transition-all duration-200">Assign Student</button>
+          <button type="submit" class="cursor-pointer bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white text-sm font-medium py-2 px-4 rounded-lg border border-blue-200 shadow-sm transition-all duration-200">Save & Assign</button>
         </div>
       </form>
     </div>

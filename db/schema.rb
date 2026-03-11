@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_11_140529) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_11_154740) do
   create_table "attendance_records", force: :cascade do |t|
     t.integer "student_id", null: false
     t.string "mac_address"
@@ -45,6 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_140529) do
     t.datetime "updated_at", null: false
     t.integer "classroom_id", null: false
     t.string "email"
+    t.string "mac_address"
     t.index ["classroom_id"], name: "index_students_on_classroom_id"
   end
 
