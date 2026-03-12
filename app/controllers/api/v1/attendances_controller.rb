@@ -9,17 +9,25 @@ module Api
 
       # POST /api/v1/attendances
       def create
-        student = Student.find_by(mac_address: params[:mac_address])
+        # Clean the input: remove spaces and make it uppercase to match the DB
+        clean_mac = params[:mac_address].to_s.strip.upcase
+
+        # Find student by the cleaned MAC address
+        student = Student.find_by(mac_address: clean_mac)
 
         if student.nil?
-          render json: { error: "Unregistered MAC: #{params[:mac_address]}" }, status: :not_found
+          render json: {
+            error: "Unregistered MAC: #{clean_mac}",
+            received_params: params.to_unsafe_h
+          }, status: :not_found
           return
         end
 
         attendance = AttendanceRecord.new(
           student: student,
           event_type: params[:event_type],
-          timestamp: params[:timestamp] || Time.current
+          # Ensure a timestamp is always present
+          timestamp: params[:timestamp].presence || Time.current
         )
 
         if attendance.save
@@ -29,6 +37,7 @@ module Api
             event_type: attendance.event_type
           }, status: :created
         else
+          # This will output the exact validation error in your Kamal logs
           render json: { errors: attendance.errors.full_messages }, status: :unprocessable_entity
         end
       end
