@@ -59,6 +59,15 @@ class ClassroomsController < ApplicationController
     end
   end
 
+  def remove_student
+    @classroom = Classroom.find(params[:id])
+    student = Student.find(params[:student_id])
+
+    student.destroy
+
+    redirect_to classroom_path(@classroom), notice: "#{student.name} was successfully deleted."
+  end
+
   private
 
   def classroom_params

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     member do
       patch :archive
       post :assign_student
+      delete :remove_student
     end
   end
 
