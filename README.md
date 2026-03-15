@@ -1,54 +1,24 @@
-# BLE Attendance API
+# AttendanceHub: BLE Attendance System
 
-This is the Ruby on Rails backend API for the BLE Attendance System. It is designed to:
-* Manage student and BLE tag (beacon) data.
-* Receive and log attendance data (entry/exit events) from the ESP32 scanner network.
-* Provide data to the frontend dashboard.
+AttendanceHub is a full-stack Ruby on Rails 8 application and IoT hardware network designed to automate classroom attendance using Bluetooth Low Energy (BLE). 
 
----
+Instead of manual roll calls, students carry nRF52 BLE tags. An ESP32 scanner deployed in the classroom detects when tags enter or exit the room and syncs this data to the website.
 
-## API Endpoints
+## Features
 
-This API provides RESTful endpoints for managing students, tags, and attendance records.
+* **Full-Stack Web Dashboard:** Teachers can manage classrooms, assign BLE tags to students, and view daily attendance records.
+* **Smart Time Aggregation:** Automatically calculates a student's absolute earliest "entered" time and latest "exited" time per day, handling mid-day signal drops.
+* **Offline Hardware Syncing:** With an internal flash storage, such is the case when the classroom Wi-Fi drops or is unavailable, the ESP32 locally caches attendance records and background-syncs them to the server once the connection is restored.
 
-### Students
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/students` | List all students |
-| `POST` | `/students` | Create a new student |
-| `GET` | `/students/:id` | Show student info |
-| `PATCH/PUT` | `/students/:id` | Update student |
-| `DELETE` | `/students/:id` | Remove student |
-
-### Tags
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/tags` | List all tags |
-| `POST` | `/tags` | Assign or create new BLE tag |
-| `PATCH/PUT` | `/tags/:id` | Update tag’s linked student |
-| `DELETE` | `/tags/:id` | Remove or unassign tag |
-
-### Attendances (ESP32 Route)
-
-This is the primary endpoint for the ESP32 scanner to send data.
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/v1/attendances` | Retrieve all attendance records |
-| `POST` | `/api/v1/attendances` | Record attendance via ESP32 |
-| `PATCH/PUT` | `/api/v1/attendances/:id` | Update attendance record |
 
 ---
 
-## ESP32 JSON Payload
+### Record Attendance
+* **Endpoint:** `POST /api/v1/attendances`
 
-To log an attendance event, the ESP32 (Scanner Node B) must send an HTTP POST request to `/api/v1/attendances` with a JSON body in the following format:
-
+**Expected JSON Payload:**
 ```json
 {
-  "mac_address": "D1:22:3A:4B:5C:6D",
+  "mac_address": "DF:52:C3:E8:8F:64",
   "event_type": "entered",
-  "timestamp": "2025-10-27T14:30:00Z"
 }
