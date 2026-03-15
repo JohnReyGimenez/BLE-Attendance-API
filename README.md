@@ -7,8 +7,8 @@ Instead of manual roll calls, students carry nRF52 BLE tags. An ESP32 scanner de
 ## Features
 
 * **Full-Stack Web Dashboard:** Teachers can manage classrooms, assign BLE tags to students, and view daily attendance records.
-* **Smart Time Aggregation:** Automatically calculates a student's absolute earliest "entered" time and latest "exited" time per day, handling mid-day signal drops.
-* **Offline Hardware Syncing:** With an internal flash storage, such is the case when the classroom Wi-Fi drops or is unavailable, the ESP32 locally caches attendance records and background-syncs them to the server once the connection is restored.
+* **Time Aggregation:** Automatically calculates a student's absolute earliest "entered" time and latest "exited" time per day, handling mid-day signal drops.
+* **Offline Syncing:** With an internal flash storage, such is the case when the classroom Wi-Fi drops or is unavailable, the ESP32 locally caches attendance records and background-syncs them to the server once the connection is restored.
 
 
 ---
